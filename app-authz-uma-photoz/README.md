@@ -1,6 +1,6 @@
 app-authz-uma-photoz: HTML5 + AngularJS client application that interacts with a protected RESTFul API
 ================================================
-
+````
 Level: Intermediate  
 Technologies: JAX-RS, HTML5, AngularJS  
 Summary: AngularJS client application that accesses a protected RESTFul API based on JAX-RS  
