@@ -17,14 +17,13 @@
  */
 package org.keycloak.example.photoz.entity;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +41,9 @@ public class Album {
 
     @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
     private List<Photo> photos = new ArrayList<Photo>();
+
+    @Transient
+    private List<String> permissions = new ArrayList<String>();
 
     @Column(nullable = false)
     private String userId;
@@ -71,6 +73,15 @@ public class Album {
 
     public void setPhotos(final List<Photo> photos) {
         this.photos = photos;
+    }
+
+
+    public List<String> getPermissions() {
+        return this.permissions;
+    }
+
+    public void setPermissions(final List<String> permissions) {
+        this.permissions = permissions;
     }
 
     public void setUserId(final String userId) {

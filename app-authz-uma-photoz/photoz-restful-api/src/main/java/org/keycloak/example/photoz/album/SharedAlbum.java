@@ -25,6 +25,7 @@ public class SharedAlbum {
 
     private Album album;
     private List<String> scopes;
+    private List<String> permissions;
 
     public SharedAlbum(Album album) {
         this.album = album;
@@ -38,10 +39,21 @@ public class SharedAlbum {
         return scopes;
     }
 
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
     public void addScope(String scope) {
         if (scopes == null) {
             scopes = new ArrayList<String>();
         }
         scopes.add(scope);
+    }
+
+    public void addPermission(String permission) {
+        if (permissions == null) {
+            permissions = new ArrayList<String>();
+        }
+        permissions.add(permission);
     }
 }
