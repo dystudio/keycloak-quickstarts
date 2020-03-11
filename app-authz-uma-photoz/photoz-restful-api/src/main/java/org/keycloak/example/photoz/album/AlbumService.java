@@ -93,13 +93,14 @@ public class AlbumService {
     public Response findAll() {
         return Response.ok(this.entityManager.createQuery("from Album where userId = :id").setParameter("id", request.getUserPrincipal().getName()).getResultList()).build();
     }
-
     @GET
     @Path("/shares")
     @Produces("application/json")
     public Response findShares() {
         List<PermissionTicketRepresentation> permissions = getAuthzClient().protection().permission().find(null, null, null, getKeycloakSecurityContext().getToken().getSubject(), true, true, null, null);
         Map<String, SharedAlbum> shares = new HashMap<String, SharedAlbum>();
+
+
 
         for (PermissionTicketRepresentation permission : permissions) {
             SharedAlbum share = shares.get(permission.getResource());
@@ -113,6 +114,36 @@ public class AlbumService {
                 share.addScope(permission.getScopeName());
             }
         }
+
+        //Sample code to get permission from rpt
+
+        AuthzClient authzClient = this.getAuthzClient();
+        String rpt = request.getHeader("Authorization").replace("Bearer ", "");
+        System.out.println("Trpt " + rpt);
+        /*AuthorizationResponse response = authzClient.authorization("alice", "alice").authorize();
+        String rpt = response.getToken();*/
+        // introspect the token
+        TokenIntrospectionResponse requestingPartyToken = authzClient.protection().introspectRequestingPartyToken(rpt);
+        Boolean active = requestingPartyToken.getActive();
+        //System.out.println("Token status is: " + active.toString());
+        //System.out.println("Permissions granted by the server: ");
+        for (SharedAlbum shared: shares.values())
+        {
+            if (requestingPartyToken.getPermissions() != null) {
+                for (Permission granted : requestingPartyToken.getPermissions()) {
+                    if (granted != null){
+                        if (granted.getResourceName() != null) {
+                            shared.addPermission(granted.toString());
+                        }
+
+                    }
+                }
+            }else{
+                shared.addPermission(rpt);
+            }
+        }
+
+
 
         return Response.ok(shares.values()).build();
     }
