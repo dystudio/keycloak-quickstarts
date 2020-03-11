@@ -109,21 +109,17 @@ public class AlbumService {
                 share = new SharedAlbum(Album.class.cast(entityManager.createQuery("from Album where externalId = :externalId").setParameter("externalId", permission.getResource()).getSingleResult()));
                 shares.put(permission.getResource(), share);
             }
-
-            if (permission.getScope() != null) {
-                share.addScope(permission.getScopeName());
-            }
         }
 
         //Sample code to get permission from rpt
 
-        AuthzClient authzClient = this.getAuthzClient();
+        //AuthzClient authzClient = this.getAuthzClient();
         String rpt = request.getHeader("Authorization").replace("Bearer ", "");
         System.out.println("Trpt " + rpt);
         /*AuthorizationResponse response = authzClient.authorization("alice", "alice").authorize();
         String rpt = response.getToken();*/
         // introspect the token
-        TokenIntrospectionResponse requestingPartyToken = authzClient.protection().introspectRequestingPartyToken(rpt);
+       /* TokenIntrospectionResponse requestingPartyToken = authzClient.protection().introspectRequestingPartyToken(rpt);
         Boolean active = requestingPartyToken.getActive();
         //System.out.println("Token status is: " + active.toString());
         //System.out.println("Permissions granted by the server: ");
@@ -142,7 +138,7 @@ public class AlbumService {
                 shared.addPermission(rpt);
             }
         }
-
+*/
 
 
         return Response.ok(shares.values()).build();

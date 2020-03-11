@@ -8,7 +8,7 @@
     "secret": "secret"
   },
   "policy-enforcer": {
-    "enforcement-mode": "PERMISSIVE",
+    "enforcement-mode": "DISABLED",
     "user-managed-access": {},
     "paths": [
       {
