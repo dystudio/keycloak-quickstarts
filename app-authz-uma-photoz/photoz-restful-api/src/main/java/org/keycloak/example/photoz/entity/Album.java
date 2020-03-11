@@ -20,11 +20,7 @@ package org.keycloak.example.photoz.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +35,9 @@ public class Album {
 
     @Column(nullable = false)
     private String name;
+
+    @Transient
+    private String claims;
 
     @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
     private List<Photo> photos = new ArrayList<Photo>();
@@ -56,6 +55,15 @@ public class Album {
     public void setId(final String id) {
         this.id = id;
     }
+
+    public String getClaims() {
+        return this.claims;
+    }
+
+    public void setClaims( String claims) {
+        this.claims = claims;
+    }
+
 
     public String getName() {
         return this.name;
